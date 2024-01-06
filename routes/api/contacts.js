@@ -4,8 +4,6 @@ const { Contact, schemas } = require("../../models/contact");
 
 const isValidId = require("../../middlewares/isValidId");
 
-// const contacts = require("../../controllers/contacts");
-
 const { HttpError } = require("../../helpers");
 
 router.get("/", async (req, res, next) => {
@@ -24,7 +22,6 @@ router.get("/:contactId", isValidId, async (req, res, next) => {
     const result = await Contact.findById(contactId); // Contact.findOne({ _id: contactId });
     if (!result) {
       throw HttpError(404, "Not found");
-      // return res.status(404).json({ message: "Not found" });
     }
     res.json(result);
   } catch (err) {
@@ -61,10 +58,10 @@ router.delete("/:contactId", isValidId, async (req, res, next) => {
 
 router.patch("/:contactId/favorite", isValidId, async (req, res, next) => {
   try {
-    // const { error } = schemas.updateFavoriteSchema.validate(req.body);
-    // if (error) {
-    //   throw HttpError(400, error.message);
-    // }
+    const { error } = schemas.updateFavoriteSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
     console.log("beginning update");
     const { contactId } = req.params;
     console.log(contactId);
