@@ -5,6 +5,10 @@ const app = require("./app");
 const DB_HOST =
   "mongodb+srv://olena:1122334455@cluster0.2foazvd.mongodb.net/db-contacts?retryWrites=true&w=majority";
 
+// require("dotenv").config();
+// console.log(require.env);
+// const { DB_HOST } = require.env;
+
 mongoose.set("strictQuery", true);
 
 mongoose
