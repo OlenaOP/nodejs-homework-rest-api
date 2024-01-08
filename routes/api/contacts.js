@@ -4,8 +4,9 @@ const router = express.Router();
 const ctrl = require("../../controllers/contacts");
 
 const isValidId = require("../../middlewares/isValidId");
+const authenticate = require("../../middlewares/authenticate");
 
-router.get("/", ctrl.listContacts);
+router.get("/", authenticate, ctrl.listContacts);
 
 router.get("/:contactId", isValidId, ctrl.getById);
 
