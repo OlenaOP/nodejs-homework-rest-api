@@ -3,7 +3,8 @@ const { HttpError } = require("../helpers");
 
 const listContacts = async (req, res, next) => {
   try {
-    const result = await Contact.find();
+    const { _id: owner } = req.user;
+    const result = await Contact.find({ owner }, "-createdAt -updatedAt");
     res.json(result);
   } catch (err) {
     next(err);
@@ -31,7 +32,8 @@ const addContact = async (req, res, next) => {
     if (error) {
       throw HttpError(400, error.message);
     }
-    const result = await Contact.create(req.body);
+    const { _id: owner } = req.user;
+    const result = await Contact.create({ ...req.body, owner });
     res.status(201).json(result);
   } catch (err) {
     next(err);
