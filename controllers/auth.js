@@ -16,7 +16,7 @@ const register = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      throw HttpError(409, "Email already in use");
+      throw HttpError(409, "Email in use");
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -63,15 +63,28 @@ const login = async (req, res, next) => {
   }
 };
 
-const getCurrent = async (req, res) => {
-  const { email } = req.user;
-  req.json({ email });
+const getCurrent = async (req, res, next) => {
+  try {
+    const { email } = req.user;
+    res.json({ email });
+  } catch (err) {
+    next(err);
+  }
 };
 
-const logout = async (req, res) => {
-  const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" });
-  res.json({ message: "Logout succes" });
+const logout = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    await User.findByIdAndUpdate(_id, { token: "" });
+    res.json({ message: "Logout succes" });
+  } catch (err) {
+    next(err);
+  }
 };
 
-module.exports = { register, login, getCurrent, logout };
+module.exports = {
+  register,
+  login,
+  getCurrent,
+  logout,
+};
