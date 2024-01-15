@@ -14,6 +14,11 @@ const contactSchema = new Schema({
     required: [true, "Set phone for contact"],
   },
   favorite: { type: Boolean, default: false },
+  owner: {
+    type: Schema.Types.ObjectID,
+    ref: "user",
+    required: true,
+  },
 });
 
 contactSchema.post("save", handleMongooseError);
